@@ -18,13 +18,13 @@ LIBDIR :=	libft/
 OBJDIR :=	.obj/
 
 CC :=		clang
-CFLAGS :=	-Wall -Wextra -Werror
+CFLAGS :=	#-Wall -Wextra -Werror
 IFLAGS :=	-I $(INCDIR)
 LFLAGS :=	-lft -L $(LIBDIR)
 
 LIB :=		$(LIBDIR)libft.a	
-INC :=		filler
-SRC :=		main
+INC :=		filler 
+SRC :=		main get_array
 
 INCS :=		$(addprefix $(INCDIR), $(addsuffix .h, $(INC)))
 SRCS :=		$(addprefix $(SRCDIR), $(addsuffix .c, $(SRC)))

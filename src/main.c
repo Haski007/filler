@@ -14,29 +14,11 @@
 
 int         main(void)
 {
-    // t_map       map;
-    // int         i;
-    // char        *line;
-    // char        **rd;
+    t_oken    token;
+    t_map       map;
 
-    // i = 0;
-    // rd = malloc(sizeof(rd) * 15);
-    // while (1)
-    // {
-    //     if (get_next_line(0, &line))
-    //     {
-    //         rd[i] = ft_strnew(ft_strlen(line));
-    //         rd[i] = line;
-    //         i++;
-    //     }
-    //     else
-    //         continue ;
-    // }
-    // map.map = rd;
-    // i = 0;
-    ft_putnbr(8);
-    ft_putchar(' ');
-    ft_putnbr(2);    
-    ft_putchar('\n');
+    parse_map(&map, &token);
+
+    // system ("leaks a.out");
     return (0);
 }

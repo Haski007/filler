@@ -26,6 +26,15 @@
 typedef struct      s_map
 {
     char            **map;
+    int             rows;
+    int             cols;
 }                   t_map;
+
+typedef struct      s_oken
+{
+    char            **shape;
+}                   t_oken;
+
+void                parse_map(t_map *map, t_oken *token);
 
 #endif

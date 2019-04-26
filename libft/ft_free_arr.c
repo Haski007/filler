@@ -12,10 +12,10 @@
 
 #include "libft.h"
 
-void	ft_free_arr(void ***array)
+void	ft_free_arr(char ***array)
 {
 	size_t	i;
-	void	**tmp;
+	char	**tmp;
 
 	i = 0;
 	tmp = *array;
