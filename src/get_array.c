@@ -12,50 +12,47 @@
 
 #include "../includes/filler.h"
 
-static void         size_of_map(char *line, t_map *map)
+void         size_of_map(char *line, t_map *map)
 {
-    line = line + 8;
-    map->rows = ft_atoi(line);
-    printf("%s\n", line + 11);
-    system("leaks a.out");
+    int     i;
+    char    *tmp;
+
+    while (get_next_line(map->fd, &line))
+    {
+        if (ft_strnequ(line, "Plateau", 7))
+        {
+            i = 0;
+            tmp = line + 8;
+            free(line);
+            map->rows = ft_atoi(tmp);
+            while (tmp[i] >= '0' && tmp[i] <= '9')
+                i++;
+            map->cols = ft_atoi(tmp + i);
+            break ;
+        }
+        free(line);
+    }
 }
 
 void                parse_map(t_map *map, t_oken *token)
 {
-    int     fd;
     int     i;
     char    *line;
     char    *tmp;
 
     i = 0;
-    if (!(fd = open("../test.txt", O_RDONLY)))
-        printf("Fuck off man, it does not open\n");
-    while (get_next_line(fd, &line))
-    {
-        if (ft_strnequ(line, "Plateau", 7))
-        {
-            size_of_map(line, map);
-            break ;
-        }
-        free(line);
-    }
+    map->fd = (!map->fd) ? open("../test.txt", O_RDONLY) : map->fd;
     map->map = malloc(sizeof(map->map) * map->rows);
-    while (get_next_line(fd, &line))
+    while (get_next_line(map->fd, &line))
     {
+        // printf("%s\n", line);
         if (line[0] >= '0' && line[0] <= '9')
         {
-            tmp = line;
             map->map[i] = ft_strjoin(line + 4, "\n");
             // printf("%s", map->map[i]);
             i++;
         }
-       free(line);
+        free(line);
     }
-    printf("rows = %d\ncols = %d", map->rows, map->cols);
-    i = 0;
-    while(map->map[i])
-    {
-        printf("%s", map->map[i]);
-        i++;
-    }
+    printf("rows = %d\ncols = %d\n", map->rows, map->cols);
 }

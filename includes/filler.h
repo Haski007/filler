@@ -26,8 +26,14 @@
 typedef struct      s_map
 {
     char            **map;
+    int             **heat;
+    char            player;
+    int             value;
     int             rows;
     int             cols;
+    int             fd;
+    int             e_start_x;
+    int             e_start_y;
 }                   t_map;
 
 typedef struct      s_oken
@@ -36,5 +42,13 @@ typedef struct      s_oken
 }                   t_oken;
 
 void                parse_map(t_map *map, t_oken *token);
+void                size_of_map(char *line, t_map *map);
+void                parse_enemy(t_map *map);
+void                heat_map(t_map *map);
+
+
+
+
+void                paint_map(t_map *map);
 
 #endif
