@@ -21,8 +21,6 @@
 
 # include "../libft/libft.h"
 
-// #include <stdio.h>
-
 typedef struct      s_map
 {
     char            **map;
@@ -39,9 +37,11 @@ typedef struct      s_map
 typedef struct      s_oken
 {
     char            **shape;
+    int             rows;
+    int             cols;
 }                   t_oken;
 
-void                parse_map(t_map *map, t_oken *token);
+void                parse(t_map *map, t_oken *token);
 void                size_of_map(char *line, t_map *map);
 void                parse_enemy(t_map *map);
 void                heat_map(t_map *map);
@@ -50,5 +50,6 @@ void                heat_map(t_map *map);
 
 
 void                paint_map(t_map *map);
+void                paint_heat(t_map *map);
 
 #endif
