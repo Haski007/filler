@@ -17,6 +17,7 @@ void        parse_enemy(t_map *map)
     int     x;
     int     y;
     int     i = 0;
+
     x = 0;
     y = 0;
     while (y < map->rows)
@@ -24,15 +25,15 @@ void        parse_enemy(t_map *map)
         x = 0;
         while (x < map->cols)
         {
-            if (map->map[y][x] == 'X' && map->player)
+            if (map->map[y][x] == 'O' && map->player)
             {
-                map->e_start_x = x;
-                map->e_start_y = y;
+                map->my_start_x = x;
+                map->my_start_y = y;
             }
-            else if (map->map[y][x] == 'O' && !map->player)
+            else if (map->map[y][x] == 'X' && !map->player)
             {
-                map->e_start_x = x;
-                map->e_start_y = y;
+                map->my_start_x = x;
+                map->my_start_y = y;
             }
             x++;
         }

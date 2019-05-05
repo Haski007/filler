@@ -116,7 +116,7 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void				ft_swap(int *a, int *b);
 int					ft_sqrt(int nb);
 int					ft_numlen(int n);
-void				ft_free_arr(char ***array);
+void				ft_free_arr(char	 ***array);
 void				ft_foreach(int *tab, int length, void (*f)(int));
 long long int		ft_power(long long int nb, int pow);
 void				ft_del(void *content, size_t content_size);

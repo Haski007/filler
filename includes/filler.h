@@ -30,8 +30,10 @@ typedef struct      s_map
     int             rows;
     int             cols;
     int             fd;
-    int             e_start_x;
-    int             e_start_y;
+    int             my_start_x;
+    int             my_start_y;
+    int             fin_y;
+    int             fin_x;
 }                   t_map;
 
 typedef struct      s_oken

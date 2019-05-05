@@ -22,7 +22,7 @@ void                paint_heat(t_map *map)
         x = 0;
         while (x < map->cols)
         {
-            if (ft_numlen(map->heat[y][x]) == 1)
+            if (ft_numlen(map->heat[y][x]) == 1 && map->heat[y][x] != -1)
                 printf(" %d ", map->heat[y][x]);
             else
                 printf("%d ", map->heat[y][x]);
@@ -53,7 +53,8 @@ static void         learn_map(t_map *map)
     map->fd = open("../test.txt", O_RDONLY);
     while (get_next_line(map->fd, &line1))
     {
-        map->player = (ft_strnequ(line1, "$$$ exec p1 : [./pdemian", 24)) ? 1 : 0;
+        if (ft_strnequ(line1, "$$$ exec p1 : [./pdemian", 24))
+            map->player = 1;
         if (line1[0] == '$')
         {
             free(line1);
@@ -71,11 +72,12 @@ int                 main(void)
     t_map       map;
     int         i = 0;
 
+    ft_bzero(&map, sizeof(t_map));
     learn_map(&map);
     parse(&map, &token);
     heat_map(&map);
     // parse_token(&token);
-    // paint_heat(&map);
+    paint_heat(&map);
     // paint_map(&map);
     // printf("Enemy position:\nx = %d\ny = %d\n", map.e_start_x, map.e_start_y);
     // system("leaks a.out");

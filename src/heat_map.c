@@ -46,18 +46,26 @@ static void     start_heat(t_map *map)
 {
     int     x;
     int     y;
+    char    enemy;
+    char    me;
 
+    me = (map->player) ? 'O' : 'X';
+    enemy = (map->player) ? 'X' : 'O';
     y = 0;
     while (y < map->rows)
     {
         x = 0;
         while (x < map->cols)
         {
-            if ((map->map[y][x] == 'X'|| map->map[y][x] == 'x')
-            || (map->heat[y][x] == map->value && map->value))
+            if (map->map[y][x] == enemy || map->map[y][x] == ft_tolower(enemy))
             {
+                map->heat[y][x] = -1;
                 heat_this(map, x, y);
             }
+            else if (map->heat[y][x] == map->value && map->value)
+                heat_this(map, x, y);
+            else if (map->map[y][x] == me || map->map[y][x] == ft_tolower(me))
+                map->heat[y][x] = 99;
             x++;
         }
         y++;

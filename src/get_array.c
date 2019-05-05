@@ -14,7 +14,7 @@
 
 static void            get_token(t_map *map, t_oken *token)
 {
-    char    *str;
+    char    *line;
     int     i;
 
     i = -1;
@@ -23,22 +23,20 @@ static void            get_token(t_map *map, t_oken *token)
     while (++i < token->rows)
         token->shape[i] = ft_strnew(token->cols);
     i = 0;
-    while (get_next_line(map->fd, &str))
+    while (get_next_line(map->fd, &line))
     {
-        if (str[0] == '.' || str[0] == '*')
+        if (line[0] == '.' || line[0] == '*')
         {
-            token->shape[i] = ft_strjoin(str, "\n");
+            token->shape[i] = ft_strjoin(line, "\n");
             i++;
         }
         else
-        {       
-            free(str);
+        {
+            free(line);
             break ;
         }
-        free(str);
+        free(line);
     }
-    system("leaks a.out");
-    exit(1);
     // i = -1;
     // while (++i < token->rows)
     //     printf("%s", token->shape[i]);
@@ -95,8 +93,8 @@ void                parse(t_map *map, t_oken *token)
         if (line[0] == 'P')
         {
             size_of_token(line, token);
-            get_token(map, token);
             free(line);
+            get_token(map, token);
             break ;
         }
         free(line);
