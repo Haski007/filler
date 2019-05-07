@@ -78,6 +78,7 @@ int                 main(void)
     heat_map(&map);
     // parse_token(&token);
     paint_heat(&map);
+    play(&map, &token);
     // paint_map(&map);
     // printf("Enemy position:\nx = %d\ny = %d\n", map.e_start_x, map.e_start_y);
     // system("leaks a.out");

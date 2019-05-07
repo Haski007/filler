@@ -30,8 +30,8 @@ typedef struct      s_map
     int             rows;
     int             cols;
     int             fd;
-    int             my_start_x;
-    int             my_start_y;
+    int             my_pos_x;
+    int             my_pos_y;
     int             fin_y;
     int             fin_x;
 }                   t_map;
@@ -47,6 +47,7 @@ void                parse(t_map *map, t_oken *token);
 void                size_of_map(char *line, t_map *map);
 void                parse_enemy(t_map *map);
 void                heat_map(t_map *map);
+void                play(t_map *map, t_oken *token);
 
 
 

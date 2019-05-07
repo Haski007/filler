@@ -12,6 +12,19 @@
 
 #include "../includes/filler.h"
 
+static void     just_me(t_map *map, int x, int y)
+{
+    if (map->heat[y][x - 1] > map->heat[y][x + 1])
+        map->heat[y][x] = map->heat[y][x - 1] - 1;
+    else if (map->heat[y][x - 1] < map->heat[y][x + 1])
+        map->heat[y][x] = map->heat[y][x + 1] - 1;
+    else if (map->heat[y - 1][x] > map->heat[y + 1][x])
+        map->heat[y][x] = map->heat[y - 1][x] - 1;
+    else if (map->heat[y - 1][x] < map->heat[y + 1][x])
+        map->heat[y][x] = map->heat[y + 1][x] - 1;
+    map->fd = map->heat[y][x];
+}
+
 static void     heat_this(t_map *map, int x, int y)
 {
     if (map->map[y][x - 1] == '.' && !map->heat[y][x - 1])
@@ -25,7 +38,7 @@ static void     heat_this(t_map *map, int x, int y)
         if (map->map[y - 1][x + 1] == '.' && !map->heat[y - 1][x + 1])
             map->heat[y - 1][x + 1] = map->value + 1;
         if (map->map[y - 1][x - 1] == '.' && !map->heat[y - 1][x - 1])
-        map->heat[y - 1][x - 1] = map->value + 1;
+            map->heat[y - 1][x - 1] = map->value + 1;
     }
     if (y < map->rows - 1)
     {
@@ -65,7 +78,7 @@ static void     start_heat(t_map *map)
             else if (map->heat[y][x] == map->value && map->value)
                 heat_this(map, x, y);
             else if (map->map[y][x] == me || map->map[y][x] == ft_tolower(me))
-                map->heat[y][x] = 99;
+                just_me(map, x, y);
             x++;
         }
         y++;

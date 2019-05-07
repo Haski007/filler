@@ -38,8 +38,7 @@ static void            get_token(t_map *map, t_oken *token)
         free(line);
     }
     // i = -1;
-    // while (++i < token->rows)
-    //     printf("%s", token->shape[i]);
+    // whilрprintf("%s", token->shape[i]);
 }
 
 static void             size_of_token(char *line, t_oken *token)
