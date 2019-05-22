@@ -62,8 +62,9 @@ static void         learn_map(t_map *map)
         }
         free(line1);
     }
+    map->me = (map->player) ? 'O' : 'X';
+    map->enemy = (map->player) ? 'X' : 'O';
     size_of_map(line1, map);
-    
 }
 
 int                 main(void)
@@ -75,11 +76,11 @@ int                 main(void)
     ft_bzero(&map, sizeof(t_map));
     learn_map(&map);
     parse(&map, &token);
+    // paint_map(&map);
     heat_map(&map);
     // parse_token(&token);
     paint_heat(&map);
     play(&map, &token);
-    // paint_map(&map);
     // printf("Enemy position:\nx = %d\ny = %d\n", map.e_start_x, map.e_start_y);
     // system("leaks a.out");
     // exit(1);

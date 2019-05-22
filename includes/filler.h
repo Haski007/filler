@@ -26,6 +26,8 @@ typedef struct      s_map
     char            **map;
     int             **heat;
     char            player;
+    char            me;
+    char            enemy;
     int             value;
     int             rows;
     int             cols;

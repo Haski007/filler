@@ -12,73 +12,58 @@
 
 #include "../includes/filler.h"
 
-static void     just_me(t_map *map, int x, int y)
-{
-    if (map->heat[y][x - 1] > map->heat[y][x + 1])
-        map->heat[y][x] = map->heat[y][x - 1] - 1;
-    else if (map->heat[y][x - 1] < map->heat[y][x + 1])
-        map->heat[y][x] = map->heat[y][x + 1] - 1;
-    else if (map->heat[y - 1][x] > map->heat[y + 1][x])
-        map->heat[y][x] = map->heat[y - 1][x] - 1;
-    else if (map->heat[y - 1][x] < map->heat[y + 1][x])
-        map->heat[y][x] = map->heat[y + 1][x] - 1;
-    map->fd = map->heat[y][x];
-}
-
 static void     heat_this(t_map *map, int x, int y)
 {
-    if (map->map[y][x - 1] == '.' && !map->heat[y][x - 1])
+    if ((map->map[y][x - 1] == '.' || map->map[y][x - 1] == map->me || map->map[y][x - 1] == ft_tolower(map->me))
+    && !map->heat[y][x - 1])
         map->heat[y][x - 1] = map->value + 1;
-    if (map->map[y][x + 1] == '.' && !map->heat[y][x + 1])
+    if ((map->map[y][x + 1] == '.' || map->map[y][x + 1] == map->me || map->map[y][x + 1] == ft_tolower(map->me))
+    && !map->heat[y][x + 1])
         map->heat[y][x + 1] = map->value + 1;
     if (y > 0)
     {
-        if (map->map[y - 1][x] == '.' && !map->heat[y - 1][x])
+        if ((map->map[y - 1][x] == '.' || map->map[y - 1][x] == map->me || map->map[y - 1][x] == ft_tolower(map->me))
+        && !map->heat[y - 1][x])
             map->heat[y - 1][x] = map->value + 1;
-        if (map->map[y - 1][x + 1] == '.' && !map->heat[y - 1][x + 1])
+        if ((map->map[y - 1][x + 1] == '.' || map->map[y - 1][x + 1] == map->me || map->map[y - 1][x + 1] == ft_tolower(map->me))
+        && !map->heat[y - 1][x + 1])
             map->heat[y - 1][x + 1] = map->value + 1;
-        if (map->map[y - 1][x - 1] == '.' && !map->heat[y - 1][x - 1])
+        if ((map->map[y - 1][x - 1] == '.' || map->map[y - 1][x - 1] == map->me || map->map[y - 1][x - 1] == ft_tolower(map->me))
+        && !map->heat[y - 1][x - 1])
             map->heat[y - 1][x - 1] = map->value + 1;
     }
     if (y < map->rows - 1)
     {
-        if (map->map[y + 1][x] == '.' && !map->heat[y + 1][x])
+        if ((map->map[y + 1][x] == '.' || map->map[y + 1][x] == map->me || map->map[y + 1][x] == ft_tolower(map->me))
+        && !map->heat[y + 1][x])
             map->heat[y + 1][x] = map->value + 1;
-        if (map->map[y + 1][x + 1] == '.' && !map->heat[y + 1][x + 1])
+        if ((map->map[y + 1][x + 1] == '.' || map->map[y + 1][x + 1] == map->me|| map->map[y + 1][x + 1] == ft_tolower(map->me))
+        && !map->heat[y + 1][x + 1])
             map->heat[y + 1][x + 1] = map->value + 1;
-        if (map->map[y + 1][x - 1] == '.' && !map->heat[y + 1][x - 1])
+        if ((map->map[y + 1][x - 1] == '.' || map->map[y + 1][x - 1] == map->me || map->map[y + 1][x - 1] == ft_tolower(map->me))
+        && !map->heat[y + 1][x - 1])
             map->heat[y + 1][x - 1] = map->value + 1;
     }
-    // paint_map(map);
-    // printf("y = %d\nx = %d\n",y ,x);
-    // paint_heat(map);
-    // printf("===============================================\n");
 }
 
 static void     start_heat(t_map *map)
 {
     int     x;
     int     y;
-    char    enemy;
-    char    me;
 
-    me = (map->player) ? 'O' : 'X';
-    enemy = (map->player) ? 'X' : 'O';
     y = 0;
     while (y < map->rows)
     {
         x = 0;
         while (x < map->cols)
         {
-            if (map->map[y][x] == enemy || map->map[y][x] == ft_tolower(enemy))
+            if (map->map[y][x] == map->enemy || map->map[y][x] == ft_tolower(map->enemy))
             {
                 map->heat[y][x] = -1;
                 heat_this(map, x, y);
             }
             else if (map->heat[y][x] == map->value && map->value)
                 heat_this(map, x, y);
-            else if (map->map[y][x] == me || map->map[y][x] == ft_tolower(me))
-                just_me(map, x, y);
             x++;
         }
         y++;
