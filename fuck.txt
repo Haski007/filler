@@ -5,8 +5,8 @@
 # -------------------------------------------- #
 launched ./pdemian.filler
 $$$ exec p1 : [./pdemian.filler]
-launched ./resources/players/grati.filler
-$$$ exec p2 : [./resources/players/grati.filler]
+launched ./resources/players/abanlin.filler
+$$$ exec p2 : [./resources/players/abanlin.filler]
 Plateau 15 17:
     01234567890123456
 000 .................
@@ -21,10 +21,11 @@ Plateau 15 17:
 009 .................
 010 .................
 011 .................
-012 ..............x..
+012 ..............X..
 013 .................
 014 .................
-Piece 2 1:
-*
-*
-<got (O): [8, 2]
+Piece 1 2:
+**
+Player with O: error on input
+== O fin: 0
+== X fin: 0

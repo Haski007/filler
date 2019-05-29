@@ -23,7 +23,7 @@ static void            get_token(t_map *map, t_oken *token)
     while (++i < token->rows)
         token->shape[i] = ft_strnew(token->cols);
     i = 0;
-    while (get_next_line(map->fd, &line))
+    while (get_next_line(map->fd, &line) > 0)
     {
         if (line[0] == '.' || line[0] == '*')
         {
@@ -79,7 +79,7 @@ void                parse(t_map *map, t_oken *token)
     char    *tmp;
 
     i = 0;
-    map->fd = (!map->fd) ? open("../test.txt", O_RDONLY) : map->fd;
+    // map->fd = (!map->fd) ? open("../test.txt", O_RDONLY) : map->fd;
     map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
 	map->map[map->rows] = NULL;
     while (get_next_line(map->fd, &line))

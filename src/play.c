@@ -12,7 +12,7 @@
 
 #include "../includes/filler.h"
 
-static void     get_my_pos(t_map *map)
+static void             get_my_pos(t_map *map)
 {
     int     y;
     int     x;
@@ -27,14 +27,14 @@ static void     get_my_pos(t_map *map)
             if (map->map[y][x] == map->me || map->map[y][x] == ft_tolower(map->me))
             {
                 if (map->heat[y][x - 1] < map->fd)
-                    map->my_pos_x = x;
+                    map->me_x = x;
                 else if (map->heat[y][x + 1] < map->fd)
-                    map->my_pos_x = x;
+                    map->me_x = x;
                 if (map->heat[y - 1][x] < map->fd)
-                    map->my_pos_y = y;
+                    map->me_y = y;
                 else if (map->heat[y + 1][x] < map->fd)
-                    map->my_pos_y = y;
-                map->fd = map->heat[map->my_pos_y][map->my_pos_x];
+                    map->me_y = y;
+                map->fd = map->heat[map->me_y][map->me_x];
             }
             x++;
         }
@@ -42,13 +42,15 @@ static void     get_my_pos(t_map *map)
     }
 }
 
-void            play(t_map *map, t_oken *token)
+void                    play(t_map *map, t_oken *token)
 {
     int     y;
     int     x;
 
     y = 0;
     get_my_pos(map);
-    
-    printf("x = %d\ny = %d\n", map->my_pos_x, map->my_pos_y);
+    ft_putnbr(map->me_y);
+    ft_putchar(' ');
+    ft_putnbr(map->me_x);
+    ft_putchar('\n');
 }

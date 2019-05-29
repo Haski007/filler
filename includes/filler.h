@@ -32,8 +32,8 @@ typedef struct      s_map
     int             rows;
     int             cols;
     int             fd;
-    int             my_pos_x;
-    int             my_pos_y;
+    int             me_x;
+    int             me_y;
     int             fin_y;
     int             fin_x;
 }                   t_map;
