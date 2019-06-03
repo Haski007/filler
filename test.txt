@@ -27,4 +27,3 @@ Plateau 15 17:
 Piece 2 1:
 *
 *
-<got (O): [8, 2]

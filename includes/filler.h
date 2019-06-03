@@ -23,6 +23,8 @@
 
 typedef struct      s_map
 {
+    char            *str;
+    char            **data;
     char            **map;
     int             **heat;
     char            player;
@@ -46,7 +48,6 @@ typedef struct      s_oken
 }                   t_oken;
 
 void                parse(t_map *map, t_oken *token);
-void                size_of_map(char *line, t_map *map);
 void                parse_enemy(t_map *map);
 void                heat_map(t_map *map);
 void                play(t_map *map, t_oken *token);

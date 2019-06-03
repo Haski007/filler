@@ -23,7 +23,7 @@ static void            get_token(t_map *map, t_oken *token)
     while (++i < token->rows)
         token->shape[i] = ft_strnew(token->cols);
     i = 0;
-    while (get_next_line(map->fd, &line) > 0)
+    while (get_next_line(map->fd, &line) > 1)
     {
         if (line[0] == '.' || line[0] == '*')
         {
@@ -37,8 +37,6 @@ static void            get_token(t_map *map, t_oken *token)
         }
         free(line);
     }
-    // i = -1;
-    // whilрprintf("%s", token->shape[i]);
 }
 
 static void             size_of_token(char *line, t_oken *token)
@@ -50,27 +48,6 @@ static void             size_of_token(char *line, t_oken *token)
     token->cols = ft_atoi(line);
 }
 
-void                    size_of_map(char *line, t_map *map)
-{
-    int     i;
-    char    *tmp;
-
-    while (get_next_line(map->fd, &line))
-    {
-        if (ft_strnequ(line, "Plateau", 7))
-        {
-            i = 0;
-            tmp = line + 8;
-            free(line);
-            map->rows = ft_atoi(tmp);
-            while (tmp[i] >= '0' && tmp[i] <= '9')
-                i++;
-            map->cols = ft_atoi(tmp + i);
-            break ;
-        }
-        free(line);
-    }
-}
 
 void                parse(t_map *map, t_oken *token)
 {
@@ -82,6 +59,7 @@ void                parse(t_map *map, t_oken *token)
     // map->fd = (!map->fd) ? open("../test.txt", O_RDONLY) : map->fd;
     map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
 	map->map[map->rows] = NULL;
+    // printf("\n\n\nHUI\n\n\n");
     while (get_next_line(map->fd, &line))
     {
         if (line[0] >= '0' && line[0] <= '9')
@@ -98,5 +76,7 @@ void                parse(t_map *map, t_oken *token)
         }
         free(line);
     }
+    heat_map(map);
+    play(map, token);
     // printf("rows = %d\ncols = %d\n", map->rows, map->cols);
 }

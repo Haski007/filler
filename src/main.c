@@ -33,6 +33,17 @@ void                paint_heat(t_map *map)
     }
 }
 
+static void         paint_token(t_oken token)
+{
+    int     i = 0;
+
+    while (i < token.rows)
+    {
+        printf("%s", token.shape[i]);
+        i++;
+    }
+}
+
 void                paint_map(t_map *map)
 {
     int i = 0;
@@ -44,19 +55,30 @@ void                paint_map(t_map *map)
     }
 }
 
-static void         learn_map(t_map *map)
+static void         size_of_map(char *line, t_map *map)
 {
     int     i;
-    char    *line;
+    char    *tmp;
 
     i = 0;
-    // map->fd = open("../test.txt", O_RDONLY);
+    tmp = line + 8;
+    map->rows = ft_atoi(tmp);
+    while (tmp[i] >= '0' && tmp[i] <= '9')
+        i++;
+    map->cols = ft_atoi(tmp + i);
+}
+
+static void         map_info(t_map *map)
+{
+    char    *line;
+
     while (get_next_line(map->fd, &line))
     {
         if (ft_strnequ(line, "$$$ exec p1 : [./pdemian", 24))
             map->player = 1;
-        if (line[0] == '$')
+        if (line[0] == 'P')
         {
+            size_of_map(line, map);
             free(line);
             break ;
         }
@@ -64,24 +86,29 @@ static void         learn_map(t_map *map)
     }
     map->me = (map->player) ? 'O' : 'X';
     map->enemy = (map->player) ? 'X' : 'O';
-    size_of_map(line, map);
 }
 
 int                 main(void)
 {
     t_oken      token;
     t_map       map;
+    char        *line;
     int         i = 0;
 
     map.fd = 0;
     ft_bzero(&map, sizeof(t_map));
-    learn_map(&map);
-    parse(&map, &token);
+    // map.fd = open("../test.txt", O_RDONLY);
+    while (get_next_line(map.fd, &line))
+    {
+        if (line[0] == 'l')
+            map_info(&map);
+        if (line[0] == ' ')
+            parse(&map, &token);
+        // free(line);
+    }
     // paint_map(&map);
-    heat_map(&map);
-    // parse_token(&token);
     // paint_heat(&map);
-    play(&map, &token);
+    // paint_token(token);
     // printf("Enemy position:\nx = %d\ny = %d\n", map.e_start_x, map.e_start_y);
     // system("leaks a.out");
     // exit(1);
