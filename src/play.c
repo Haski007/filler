@@ -16,9 +16,10 @@ static void             get_my_pos(t_map *map)
 {
     int     y;
     int     x;
+    int     max;
 
     y = 0;
-    map->fd = 999;
+    max = 999;
     while (y < map->rows)
     {
         x = 0;
@@ -26,15 +27,15 @@ static void             get_my_pos(t_map *map)
         {
             if (map->map[y][x] == map->me || map->map[y][x] == ft_tolower(map->me))
             {
-                if (map->heat[y][x - 1] < map->fd)
+                if (map->heat[y][x - 1] <= max)
                     map->me_x = x;
-                else if (map->heat[y][x + 1] < map->fd)
+                else if (map->heat[y][x + 1] <= max)
                     map->me_x = x;
-                if (map->heat[y - 1][x] < map->fd)
+                if (map->heat[y - 1][x] <= max)
                     map->me_y = y;
-                else if (map->heat[y + 1][x] < map->fd)
+                else if (map->heat[y + 1][x] <= max)
                     map->me_y = y;
-                map->fd = map->heat[map->me_y][map->me_x];
+                max = map->heat[map->me_y][map->me_x];
             }
             x++;
         }

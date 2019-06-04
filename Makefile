@@ -24,7 +24,7 @@ LFLAGS :=	-lft -L $(LIBDIR)
 
 LIB :=		$(LIBDIR)libft.a	
 INC :=		filler 
-SRC :=		main get_array heat_map play
+SRC :=		main get_array heat_map play play2
 
 INCS :=		$(addprefix $(INCDIR), $(addsuffix .h, $(INC)))
 SRCS :=		$(addprefix $(SRCDIR), $(addsuffix .c, $(SRC)))

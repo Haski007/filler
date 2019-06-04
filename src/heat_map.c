@@ -70,18 +70,42 @@ static void     start_heat(t_map *map)
     }
 }
 
+static void	    ft_free_int_arr(t_map *map)
+{
+	int	x;
+    int y;
+
+	y = -1;
+	while (map->heat[++y])
+	{
+        x = -1;
+        while (map->heat[y][++x])
+            map->heat[y][x] = 0;
+    }
+}
+
+
 void            heat_map(t_map *map)
 {
-    int     i = -1;
+    int             i;
 
-    map->heat = (int **)malloc(sizeof(int *) * map->rows + 1);
-    map->heat[map->rows] = NULL;
+    i = -1;
+    if (map->heat)
+    {
+        ft_free_int_arr(map);
+    }
+    else
+    {
+        map->heat = (int **)malloc(sizeof(int *) * map->rows + 1);
+        map->heat[map->rows] = NULL;
     while (++i < map->rows)
         map->heat[i] = (int *)malloc(sizeof(int) * map->cols);
+    }
     i = -1;
     while (++i < map->cols)
     {
         map->value = i;
         start_heat(map);
+        // paint_heat(map);
     }
 }

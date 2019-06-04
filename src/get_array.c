@@ -23,17 +23,14 @@ static void            get_token(t_map *map, t_oken *token)
     while (++i < token->rows)
         token->shape[i] = ft_strnew(token->cols);
     i = 0;
-    while (get_next_line(map->fd, &line) > 1)
+    printf("\n\n%d\n\n", token->rows);
+    while (++i < token->rows)
     {
+        get_next_line(map->fd, &line);
         if (line[0] == '.' || line[0] == '*')
         {
             token->shape[i] = ft_strjoin(line, "\n");
             i++;
-        }
-        else
-        {
-            free(line);
-            break ;
         }
         free(line);
     }
@@ -57,8 +54,11 @@ void                parse(t_map *map, t_oken *token)
 
     i = 0;
     // map->fd = (!map->fd) ? open("../test.txt", O_RDONLY) : map->fd;
-    map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
-	map->map[map->rows] = NULL;
+    if (!map->map)
+    {
+        map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
+	    map->map[map->rows] = NULL;
+    }
     // printf("\n\n\nHUI\n\n\n");
     while (get_next_line(map->fd, &line))
     {
@@ -76,7 +76,10 @@ void                parse(t_map *map, t_oken *token)
         }
         free(line);
     }
+    // ft_putchar('\n');
+    // paint_map(map);
+    // system("leaks a.out");
     heat_map(map);
-    play(map, token);
+    (map->player) ? play(map, token) : play2(map, token);
     // printf("rows = %d\ncols = %d\n", map->rows, map->cols);
 }

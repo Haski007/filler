@@ -11,6 +11,31 @@
 /* ************************************************************************** */
 
 #include "../includes/filler.h"
+// #include "heat_map.c"
+// #include "play.c"
+// #include "get_array.c"
+// #include "../libft/get_next_line.c"
+// #include "../libft/ft_strlen.c"
+// #include "../libft/ft_bzero.c"
+// #include "../libft/ft_numlen.c"
+// #include "../libft/ft_strnew.c"
+// #include "../libft/ft_lstadd.c"
+// #include "../libft/ft_lstnew.c"
+// #include "../libft/ft_memalloc.c"
+// #include "../libft/ft_strchr.c"
+// #include "../libft/ft_strdup.c"
+// #include "../libft/ft_strjoin.c"
+// #include "../libft/ft_memcpy.c"
+// #include "../libft/ft_memset.c"
+// #include "../libft/ft_strcat.c"
+// #include "../libft/ft_strcpy.c"
+// #include "../libft/ft_free_arr.c"
+// #include "../libft/ft_strnequ.c"
+// #include "../libft/ft_strncmp.c"
+// #include "../libft/ft_atoi.c"
+// #include "../libft/ft_tolower.c"
+// #include "../libft/ft_putchar.c"
+// #include "../libft/ft_putnbr.c"
 
 void                paint_heat(t_map *map)
 {
@@ -79,10 +104,10 @@ static void         map_info(t_map *map)
         if (line[0] == 'P')
         {
             size_of_map(line, map);
-            free(line);
+            // free(line);
             break ;
         }
-        free(line);
+        // free(line);
     }
     map->me = (map->player) ? 'O' : 'X';
     map->enemy = (map->player) ? 'X' : 'O';
@@ -95,16 +120,21 @@ int                 main(void)
     char        *line;
     int         i = 0;
 
-    map.fd = 0;
     ft_bzero(&map, sizeof(t_map));
-    // map.fd = open("../test.txt", O_RDONLY);
-    while (get_next_line(map.fd, &line))
+    map.fd = 0;
+    // map.fd = open("test.txt", O_RDONLY);
+    while (1)
     {
+        if (!(get_next_line(map.fd, &line)))
+            break ;
         if (line[0] == 'l')
+        {
             map_info(&map);
+        }
         if (line[0] == ' ')
+        {
             parse(&map, &token);
-        // free(line);
+        }
     }
     // paint_map(&map);
     // paint_heat(&map);
