@@ -21,7 +21,7 @@
 # include <fcntl.h>
 # include <limits.h>
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 10
 # define MALLCHECK(x) if (!x) return (-1);
 # define IS_SPACE(x) (x == ' ' || x == '\t' || x == '\r' || x == '\f')
 

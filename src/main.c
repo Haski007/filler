@@ -36,6 +36,7 @@
 // #include "../libft/ft_tolower.c"
 // #include "../libft/ft_putchar.c"
 // #include "../libft/ft_putnbr.c"
+// #include "../libft/ft_strstr.c"
 
 void                paint_heat(t_map *map)
 {
@@ -58,15 +59,17 @@ void                paint_heat(t_map *map)
     }
 }
 
-static void         paint_token(t_oken token)
+void         paint_token(t_oken *token)
 {
     int     i = 0;
 
-    while (i < token.rows)
+    while (i < token->rows)
     {
-        printf("%s", token.shape[i]);
+        dprintf(2, "%s", token->shape[i]);
         i++;
     }
+
+
 }
 
 void                paint_map(t_map *map)
@@ -93,14 +96,12 @@ static void         size_of_map(char *line, t_map *map)
     map->cols = ft_atoi(tmp + i);
 }
 
-static void         map_info(t_map *map)
+static void         map_info(char *line, t_map *map)
 {
-    char    *line;
-
+    if (ft_strnequ(line, "$$$ exec p1 : [./pdemian", 24))
+        map->player = 1;
     while (get_next_line(map->fd, &line))
     {
-        if (ft_strnequ(line, "$$$ exec p1 : [./pdemian", 24))
-            map->player = 1;
         if (line[0] == 'P')
         {
             size_of_map(line, map);
@@ -127,19 +128,19 @@ int                 main(void)
     {
         if (!(get_next_line(map.fd, &line)))
             break ;
-        if (line[0] == 'l')
+        if (ft_strstr(line, "$$$"))
         {
-            map_info(&map);
+            map_info(line, &map);
         }
-        if (line[0] == ' ')
+        else if (ft_strstr(line, "01234567890123"))
         {
             parse(&map, &token);
         }
+        free(line);
     }
     // paint_map(&map);
     // paint_heat(&map);
     // paint_token(token);
-    // printf("Enemy position:\nx = %d\ny = %d\n", map.e_start_x, map.e_start_y);
     // system("leaks a.out");
     // exit(1);
     return (0);

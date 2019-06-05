@@ -43,6 +43,8 @@ typedef struct      s_oken
     char            **shape;
     int             rows;
     int             cols;
+    int             err_y;
+    int             err_x;
 }                   t_oken;
 
 void                parse(t_map *map, t_oken *token);
@@ -55,5 +57,6 @@ void                play2(t_map *map, t_oken *token);
 
 void                paint_map(t_map *map);
 void                paint_heat(t_map *map);
+void                paint_token(t_oken *token);
 
 #endif

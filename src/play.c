@@ -16,6 +16,8 @@ static void             get_my_pos(t_map *map)
 {
     int     y;
     int     x;
+    int     yy;
+    int     xx;
     int     max;
 
     y = 0;
@@ -28,19 +30,21 @@ static void             get_my_pos(t_map *map)
             if (map->map[y][x] == map->me || map->map[y][x] == ft_tolower(map->me))
             {
                 if (map->heat[y][x - 1] <= max)
-                    map->me_x = x;
+                    xx = x;
                 else if (map->heat[y][x + 1] <= max)
-                    map->me_x = x;
+                    xx = x;
                 if (map->heat[y - 1][x] <= max)
-                    map->me_y = y;
+                    yy = y;
                 else if (map->heat[y + 1][x] <= max)
-                    map->me_y = y;
-                max = map->heat[map->me_y][map->me_x];
+                    yy = y;
+                max = map->heat[yy][xx];
             }
             x++;
         }
         y++;
     }
+    map->me_x = xx;
+    map->me_y = yy;
 }
 
 void                    play(t_map *map, t_oken *token)
@@ -48,10 +52,12 @@ void                    play(t_map *map, t_oken *token)
     int     y;
     int     x;
 
-    y = 0;
     get_my_pos(map);
-    ft_putnbr(map->me_y);
+    map->fin_x = map->me_x - token->err_x;
+    map->fin_y = map->me_y - token->err_y;
+    // check_token(token);
+    ft_putnbr(map->fin_y);
     ft_putchar(' ');
-    ft_putnbr(map->me_x);
+    ft_putnbr(map->fin_x);
     ft_putchar('\n');
 }

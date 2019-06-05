@@ -16,24 +16,38 @@ static void            get_token(t_map *map, t_oken *token)
 {
     char    *line;
     int     i;
+    int     j;
 
     i = -1;
     token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
     token->shape[token->cols] = NULL;
-    while (++i < token->rows)
-        token->shape[i] = ft_strnew(token->cols);
-    i = 0;
-    printf("\n\n%d\n\n", token->rows);
+    i = -1;
     while (++i < token->rows)
     {
         get_next_line(map->fd, &line);
-        if (line[0] == '.' || line[0] == '*')
-        {
-            token->shape[i] = ft_strjoin(line, "\n");
-            i++;
-        }
+        dprintf(2, "%s\n", line);
+        token->shape[i] = ft_strjoin(line, "\n");
         free(line);
     }
+    j = -1;
+    while (++j < token->rows)
+    {
+        i = -1;
+        while (++i < token->cols)
+        {
+            if (token->shape[j][i] == '*')
+            {
+                token->err_x = i;
+                token->err_y = j;
+                // paint_token(token);                
+                return ;
+            }
+        }
+    }
+    // printf("\n----------------\n");
+    // paint_token(token);
+    // printf("----------------\n");
+    // printf("err_x = %d\nerr_y = %d\n", token->err_y, token->err_x);
 }
 
 static void             size_of_token(char *line, t_oken *token)
@@ -60,7 +74,7 @@ void                parse(t_map *map, t_oken *token)
 	    map->map[map->rows] = NULL;
     }
     // printf("\n\n\nHUI\n\n\n");
-    while (get_next_line(map->fd, &line))
+    while (get_next_line(map->fd, &line) > 0)
     {
         if (line[0] >= '0' && line[0] <= '9')
         {
@@ -69,6 +83,7 @@ void                parse(t_map *map, t_oken *token)
         }
         if (line[0] == 'P')
         {
+            ft_bzero(token, sizeof(t_oken));
             size_of_token(line, token);
             free(line);
             get_token(map, token);
@@ -80,6 +95,6 @@ void                parse(t_map *map, t_oken *token)
     // paint_map(map);
     // system("leaks a.out");
     heat_map(map);
-    (map->player) ? play(map, token) : play2(map, token);
+    play(map, token);
     // printf("rows = %d\ncols = %d\n", map->rows, map->cols);
 }

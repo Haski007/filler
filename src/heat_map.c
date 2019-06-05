@@ -50,23 +50,29 @@ static void     start_heat(t_map *map)
 {
     int     x;
     int     y;
+    int     i;
 
-    y = 0;
-    while (y < map->rows)
+    i = -1;
+    while (++i < map->cols)
     {
-        x = 0;
-        while (x < map->cols)
+        map->value = i;
+        y = 0;
+        while (y < map->rows)
         {
-            if (map->map[y][x] == map->enemy || map->map[y][x] == ft_tolower(map->enemy))
+            x = 0;
+            while (x < map->cols)
             {
-                map->heat[y][x] = -1;
-                heat_this(map, x, y);
+                if (map->map[y][x] == map->enemy || map->map[y][x] == ft_tolower(map->enemy))
+                {
+                    map->heat[y][x] = -1;
+                    heat_this(map, x, y);
+                }
+                else if (map->heat[y][x] == map->value && map->value)
+                    heat_this(map, x, y);
+                x++;
             }
-            else if (map->heat[y][x] == map->value && map->value)
-                heat_this(map, x, y);
-            x++;
+            y++;
         }
-        y++;
     }
 }
 
@@ -91,9 +97,7 @@ void            heat_map(t_map *map)
 
     i = -1;
     if (map->heat)
-    {
         ft_free_int_arr(map);
-    }
     else
     {
         map->heat = (int **)malloc(sizeof(int *) * map->rows + 1);
@@ -102,10 +106,6 @@ void            heat_map(t_map *map)
         map->heat[i] = (int *)malloc(sizeof(int) * map->cols);
     }
     i = -1;
-    while (++i < map->cols)
-    {
-        map->value = i;
-        start_heat(map);
-        // paint_heat(map);
-    }
+    start_heat(map);
+    //paint_heat(map);
 }

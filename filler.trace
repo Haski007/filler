@@ -1,4 +1,6 @@
-seed = 225
-resources/players/carli.filler won
+seed = 5705
+O: timedout
+./pdemian.filler: Segfault at 7
+./resources/players/carli.filler won
 Score:
-0AGAINST161
+7AGAINST157
