@@ -25,7 +25,7 @@ static void             get_my_pos(t_map *map)
     while (y < map->rows)
     {
         x = 0;
-        while (x < map->cols)
+        while (map->map[y][x])
         {
             if (map->map[y][x] == map->me || map->map[y][x] == ft_tolower(map->me))
             {
@@ -49,13 +49,17 @@ static void             get_my_pos(t_map *map)
 
 void                    play(t_map *map, t_oken *token)
 {
-    int     y;
-    int     x;
+    static int  i = 0;
 
     get_my_pos(map);
     map->fin_x = map->me_x - token->err_x;
     map->fin_y = map->me_y - token->err_y;
-    // check_token(token);
+    if (!(valid_token(map, token)))
+        map->fd = 333;
+    i++;
+    // dprintf(2, "\ni = %d\n", i);
+    // dprintf(2, "\nIt's trapped!!\n");
+    // dprintf(2, "\ny = %d\nx = %d\n", map->fin_y, map->fin_x);
     ft_putnbr(map->fin_y);
     ft_putchar(' ');
     ft_putnbr(map->fin_x);

@@ -59,7 +59,7 @@ void                paint_heat(t_map *map)
     }
 }
 
-void         paint_token(t_oken *token)
+void                paint_token(t_oken *token)
 {
     int     i = 0;
 
@@ -105,10 +105,10 @@ static void         map_info(char *line, t_map *map)
         if (line[0] == 'P')
         {
             size_of_map(line, map);
-            // free(line);
+            free(line);
             break ;
         }
-        // free(line);
+        free(line);
     }
     map->me = (map->player) ? 'O' : 'X';
     map->enemy = (map->player) ? 'X' : 'O';
@@ -119,14 +119,14 @@ int                 main(void)
     t_oken      token;
     t_map       map;
     char        *line;
-    int         i = 0;
+    int         i = -1;
 
     ft_bzero(&map, sizeof(t_map));
     map.fd = 0;
-    // map.fd = open("test.txt", O_RDONLY);
+    // map.fd   = open("test.txt", O_RDONLY);
     while (1)
     {
-        if (!(get_next_line(map.fd, &line)))
+        if (!(get_next_line(map.fd, &line)) || map.fd == 333)
             break ;
         if (ft_strstr(line, "$$$"))
         {

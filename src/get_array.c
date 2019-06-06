@@ -12,20 +12,39 @@
 
 #include "../includes/filler.h"
 
-static void            get_token(t_map *map, t_oken *token)
+int                    valid_token(t_map *map, t_oken *token)
+{
+    int     y;
+    int     x;
+
+    y = -1;
+    while (++y < token->rows)
+    {
+        x = -1;
+        while (++x < token->cols)
+        {
+            if (token->shape[y][x] == '*' && (!map->heat[map->fin_y + y][map->fin_x + x]
+            || map->heat[map->fin_y + y][map->fin_x + x] < 0))
+                return (0);
+        }
+    }
+    return (1);
+}
+
+static void             get_token(t_map *map, t_oken *token)
 {
     char    *line;
     int     i;
     int     j;
 
-    i = -1;
     token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
     token->shape[token->cols] = NULL;
     i = -1;
+    dprintf(2, "fd = %d\nrows = %d\n", map->fd, token->rows);
     while (++i < token->rows)
     {
-        get_next_line(map->fd, &line);
-        dprintf(2, "%s\n", line);
+        if (!(get_next_line(map->fd, &line)))
+            break ;
         token->shape[i] = ft_strjoin(line, "\n");
         free(line);
     }
@@ -50,7 +69,7 @@ static void            get_token(t_map *map, t_oken *token)
     // printf("err_x = %d\nerr_y = %d\n", token->err_y, token->err_x);
 }
 
-static void             size_of_token(char *line, t_oken *token)
+void             size_of_token(char *line, t_oken *token)
 {
     line += 6;
     token->rows = ft_atoi(line);
@@ -65,6 +84,8 @@ void                parse(t_map *map, t_oken *token)
     int     i;
     char    *line;
     char    *tmp;
+    static int  fuck = 0;
+    int     j = 0;
 
     i = 0;
     // map->fd = (!map->fd) ? open("../test.txt", O_RDONLY) : map->fd;
@@ -81,7 +102,7 @@ void                parse(t_map *map, t_oken *token)
             map->map[i] = ft_strjoin(line + 4, "\n");
             i++;
         }
-        if (line[0] == 'P')
+        if (ft_strstr(line, "Piece"))
         {
             ft_bzero(token, sizeof(t_oken));
             size_of_token(line, token);
@@ -90,6 +111,7 @@ void                parse(t_map *map, t_oken *token)
             break ;
         }
         free(line);
+        j++;
     }
     // ft_putchar('\n');
     // paint_map(map);

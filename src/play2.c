@@ -50,6 +50,7 @@ void                    play2(t_map *map, t_oken *token)
 
     y = 0;
     get_my_pos2(map);
+    system("leaks pdemian.filler");
     ft_putnbr(map->me_y);
     ft_putchar(' ');
     ft_putnbr(map->me_x);

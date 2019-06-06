@@ -23,6 +23,7 @@
 
 typedef struct      s_map
 {
+    char            *line;
     char            **map;
     int             **heat;
     char            player;
@@ -52,6 +53,8 @@ void                parse_enemy(t_map *map);
 void                heat_map(t_map *map);
 void                play(t_map *map, t_oken *token);
 void                play2(t_map *map, t_oken *token);
+int                 valid_token(t_map *map, t_oken *token);
+void             size_of_token(char *line, t_oken *token);
 
 
 
