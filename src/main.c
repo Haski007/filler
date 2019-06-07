@@ -141,7 +141,7 @@ int                 main(void)
     // paint_map(&map);
     // paint_heat(&map);
     // paint_token(token);
-    // system("leaks a.out");
+    // system("leaks pdemian.filler");   
     // exit(1);
     return (0);
 }

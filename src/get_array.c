@@ -35,33 +35,16 @@ static void             get_token(t_map *map, t_oken *token)
 {
     char    *line;
     int     i;
-    int     j;
 
     token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
     token->shape[token->cols] = NULL;
     i = -1;
-    dprintf(2, "fd = %d\nrows = %d\n", map->fd, token->rows);
     while (++i < token->rows)
     {
         if (!(get_next_line(map->fd, &line)))
             break ;
         token->shape[i] = ft_strjoin(line, "\n");
-        free(line);
-    }
-    j = -1;
-    while (++j < token->rows)
-    {
-        i = -1;
-        while (++i < token->cols)
-        {
-            if (token->shape[j][i] == '*')
-            {
-                token->err_x = i;
-                token->err_y = j;
-                // paint_token(token);                
-                return ;
-            }
-        }
+        // free(line);
     }
     // printf("\n----------------\n");
     // paint_token(token);
@@ -95,6 +78,7 @@ void                parse(t_map *map, t_oken *token)
 	    map->map[map->rows] = NULL;
     }
     // printf("\n\n\nHUI\n\n\n");
+    dprintf(2, "fuck = %d\n", ++fuck);
     while (get_next_line(map->fd, &line) > 0)
     {
         if (line[0] >= '0' && line[0] <= '9')
@@ -106,17 +90,20 @@ void                parse(t_map *map, t_oken *token)
         {
             ft_bzero(token, sizeof(t_oken));
             size_of_token(line, token);
-            free(line);
             get_token(map, token);
+            // free(line);
             break ;
         }
-        free(line);
+        // free(line);
         j++;
     }
     // ft_putchar('\n');
     // paint_map(map);
     // system("leaks a.out");
     heat_map(map);
-    play(map, token);
+    if (map->player || (!map->player && map->rows > 95))
+        play(map, token);
+    else
+        play2(map, token);
     // printf("rows = %d\ncols = %d\n", map->rows, map->cols);
 }

@@ -1,6 +1,2 @@
-seed = 6994
-O: error on input
-./pdemian.filler: Segfault at 10
-./resources/players/carli.filler won
-Score:
-10AGAINST29
+seed = 3844
+O: timedout
