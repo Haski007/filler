@@ -13,7 +13,8 @@
 #include "../includes/filler.h"
 // #include "heat_map.c"
 // #include "play.c"
-// #include "get_array.c"
+// #include "parse.c"
+// #include "algos.c"
 // #include "../libft/get_next_line.c"
 // #include "../libft/ft_strlen.c"
 // #include "../libft/ft_bzero.c"
@@ -83,6 +84,16 @@ void                paint_map(t_map *map)
     }
 }
 
+void                ready(t_map *map)
+{
+    ft_putnbr(map->fin_y);
+    ft_putchar(' ');
+    ft_putnbr(map->fin_x);
+    ft_putchar('\n');
+    map->me_x = map->fin_x;
+    map->me_y = map->fin_y;
+}
+
 static void         size_of_map(char *line, t_map *map)
 {
     int     i;
@@ -134,7 +145,10 @@ int                 main(void)
         }
         else if (ft_strstr(line, "01234567890123"))
         {
-            parse(&map, &token);
+            get_map(&map, &token);
+            // heat_map(&map);
+            if (play(&map, &token))
+                return (0);
         }
         free(line);
     }
