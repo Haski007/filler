@@ -66,11 +66,10 @@ void                paint_token(t_oken *token)
 
     while (i < token->rows)
     {
-        dprintf(2, "%s", token->shape[i]);
+        dprintf(2, "%s\n", token->shape[i]);
         i++;
     }
-
-
+    dprintf(2, "--------------------------\n");
 }
 
 void                paint_map(t_map *map)
@@ -84,7 +83,11 @@ void                paint_map(t_map *map)
     }
 }
 
-void                ready(t_map *map)
+static void         init_structure(t_map *map)
+{
+}
+
+void                ready(t_map *map, t_oken *token)
 {
     ft_putnbr(map->fin_y);
     ft_putchar(' ');
@@ -92,6 +95,7 @@ void                ready(t_map *map)
     ft_putchar('\n');
     map->me_x = map->fin_x;
     map->me_y = map->fin_y;
+    // system("leaks pdemian.filler");
 }
 
 static void         size_of_map(char *line, t_map *map)
@@ -116,10 +120,10 @@ static void         map_info(char *line, t_map *map)
         if (line[0] == 'P')
         {
             size_of_map(line, map);
-            free(line);
+            // free(line);
             break ;
         }
-        free(line);
+        // free(line);
     }
     map->me = (map->player) ? 'O' : 'X';
     map->enemy = (map->player) ? 'X' : 'O';
@@ -133,11 +137,12 @@ int                 main(void)
     int         i = -1;
 
     ft_bzero(&map, sizeof(t_map));
+    ft_bzero(&token, sizeof(t_oken));
     map.fd = 0;
     // map.fd   = open("test.txt", O_RDONLY);
     while (1)
     {
-        if (!(get_next_line(map.fd, &line)) || map.fd == 333)
+        if (!(get_next_line(map.fd, &line)))
             break ;
         if (ft_strstr(line, "$$$"))
         {
@@ -145,17 +150,28 @@ int                 main(void)
         }
         else if (ft_strstr(line, "01234567890123"))
         {
-            get_map(&map, &token);
-            // heat_map(&map);
-            if (play(&map, &token))
-                return (0);
+            while (1)
+            {
+                get_map(&map, &token);
+                if (play(&map, &token))
+                    ready(&map, &token);
+                else
+                    if (check_all(&map, &token))
+                        ready(&map, &token);
+                    else
+                    {
+                        map.fin_x = -1;
+                        map.fin_y = -1;
+                        ready(&map, &token);
+                    }
+            }
         }
-        free(line);
+        // free(line);
     }
     // paint_map(&map);
     // paint_heat(&map);
     // paint_token(token);
-    // system("leaks pdemian.filler");   
+    // system("leaks pdemian.filler");
     // exit(1);
     return (0);
 }

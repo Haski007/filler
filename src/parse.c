@@ -37,14 +37,49 @@ static void             get_my_pos(t_map *map)
     }
 }
 
+static void             get_real_token(t_oken *token)
+{
+    int     y;
+    int     x;
+
+    token->left = token->cols;
+    token->up = token->rows;
+    token->down = 0;
+    token->right = 0;
+    y = -1;
+    while (++y < token->rows)
+    {
+        x = -1;
+        while (++x < token->cols)
+        {
+            if (token->shape[y][x] == '*')
+            {
+                if (x < token->left)
+                    token->left = x;
+                if (x > token->right)
+                    token->right = x;
+                if (y < token->up)
+                    token->up = y;
+                if (x > token->down)
+                    token->down = y;
+            }
+        }
+    }
+//     dprintf(2, "down = %d\nright = %d\n", token->down, token->right);
+
+//     dprintf(2, "y = %d\nx = %d\n", token->up, token->left);
+}
 
 static void             get_token(t_map *map, t_oken *token)
 {
     char    *line;
     int     i;
 
-    token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
-    token->shape[token->cols] = NULL;
+    if (!token->shape)
+    {
+        token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
+        token->shape[token->cols] = NULL;
+    }
     i = -1;
     while (++i < token->rows)
     {
@@ -53,6 +88,8 @@ static void             get_token(t_map *map, t_oken *token)
         token->shape[i] = ft_strdup(line);
         // free(line);
     }
+    get_real_token(token);
+    // paint_token(token);
     // printf("\n----------------\n");
     // paint_token(token);
     // printf("----------------\n");
@@ -92,7 +129,6 @@ void                get_map(t_map *map, t_oken *token)
             map->map[++i] = ft_strdup(line + 4);
         if (ft_strstr(line, "Piece"))
         {
-            ft_bzero(token, sizeof(t_oken));
             size_of_token(line, token);
             get_token(map, token);
             // free(line);
@@ -101,6 +137,7 @@ void                get_map(t_map *map, t_oken *token)
         // free(line);
         j++;
     }
-    if (!map->enemy_x)
+    parse_enemy(map);
+    if (!map->me_x)
         get_my_pos(map);
 }
