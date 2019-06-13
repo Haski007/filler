@@ -16,7 +16,6 @@ void        parse_enemy(t_map *map)
 {
     int     x;
     int     y;
-    int     i = 0;
 
     y = -1;
     while (++y < map->rows)
@@ -24,7 +23,7 @@ void        parse_enemy(t_map *map)
         x = -1;
         while (++x < map->cols)
         {
-            if (map->map[y][x] == ft_tolower(map->enemy))
+            if (map->map[y][x] == ft_tolower(map->enemy) || map->map[y][x] == map->enemy)
             {
                 map->enemy_x = x;
                 map->enemy_y = y;

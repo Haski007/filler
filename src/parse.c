@@ -60,14 +60,21 @@ static void             get_real_token(t_oken *token)
                     token->right = x;
                 if (y < token->up)
                     token->up = y;
-                if (x > token->down)
+                if (y > token->down)
                     token->down = y;
             }
         }
     }
-//     dprintf(2, "down = %d\nright = %d\n", token->down, token->right);
+}
 
-//     dprintf(2, "y = %d\nx = %d\n", token->up, token->left);
+
+void             size_of_token(char *line, t_oken *token)
+{
+    line += 6;
+    token->rows = ft_atoi(line);
+    while (*line >= '0' && *line <= '9')
+        line++;
+    token->cols = ft_atoi(line);
 }
 
 static void             get_token(t_map *map, t_oken *token)
@@ -86,58 +93,40 @@ static void             get_token(t_map *map, t_oken *token)
         if (!(get_next_line(map->fd, &line)))
             break ;
         token->shape[i] = ft_strdup(line);
-        // free(line);
+        free(line);
     }
     get_real_token(token);
-    // paint_token(token);
-    // printf("\n----------------\n");
-    // paint_token(token);
-    // printf("----------------\n");
-    // printf("err_x = %d\nerr_y = %d\n", token->err_y, token->err_x);
 }
-
-void             size_of_token(char *line, t_oken *token)
-{
-    line += 6;
-    token->rows = ft_atoi(line);
-    while (*line >= '0' && *line <= '9')
-        line++;
-    token->cols = ft_atoi(line);
-}
-
 
 void                get_map(t_map *map, t_oken *token)
 {
     int     i;
     char    *line;
-    char    *tmp;
-    static int  fuck = 0;
-    int     j = 0;
 
-    // map->fd = (!map->fd) ? open("../test.txt", O_RDONLY) : map->fd;
     if (!map->map)
     {
         map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
 	    map->map[map->rows] = NULL;
     }
-    // printf("\n\n\nHUI\n\n\n");
-    // dprintf(2, "fuck = %d\n", ++fuck);
     i = -1;
     while (get_next_line(map->fd, &line) > 0)
     {
         if (line[0] >= '0' && line[0] <= '9')
+        {
             map->map[++i] = ft_strdup(line + 4);
+        }
         if (ft_strstr(line, "Piece"))
         {
             size_of_token(line, token);
             get_token(map, token);
-            // free(line);
+            free(line);
             break ;
         }
-        // free(line);
-        j++;
+        free(line);
     }
     parse_enemy(map);
     if (!map->me_x)
+    {
         get_my_pos(map);
+    }
 }
