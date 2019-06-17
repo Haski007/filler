@@ -77,54 +77,58 @@ void             size_of_token(char *line, t_oken *token)
     token->cols = ft_atoi(line);
 }
 
-static void             get_token(t_map *map, t_oken *token)
+static void             get_token(char *line, t_map *map, t_oken *token)
 {
-    char    *line;
-    int     i;
-
-    if (!token->shape)
-    {
-        token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
-        token->shape[token->cols] = NULL;
-    }
+    int       i;
+    
     i = -1;
-    while (++i < token->rows)
-    {
-        if (!(get_next_line(map->fd, &line)))
-            break ;
-        token->shape[i] = ft_strdup(line);
-        free(line);
-    }
-    get_real_token(token);
+    token->shape[i] = ft_strdup(line);
 }
 
 void                get_map(t_map *map, t_oken *token)
 {
     int     i;
     char    *line;
+    int     j;
 
     if (!map->map)
     {
         map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
 	    map->map[map->rows] = NULL;
     }
+    if (!token->shape)
+    {
+        token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
+        token->shape[token->cols] = NULL;
+    }
     i = -1;
+    j = -1;
     while (get_next_line(map->fd, &line) > 0)
     {
         if (line[0] >= '0' && line[0] <= '9')
         {
             map->map[++i] = ft_strdup(line + 4);
         }
-        if (ft_strstr(line, "Piece"))
+        else if (ft_strstr(line, "Piece"))
         {
             size_of_token(line, token);
-            get_token(map, token);
-            free(line);
-            break ;
+            ft_strdel(&line);
         }
-        free(line);
+        else if (line[0] == '.' || line[0] == '*')
+        {
+            token->shape[++j] = ft_strdup(line);
+            if (j == token->rows - 1)
+            {
+                ft_strdel(&line);
+                break ;
+            }
+        }
+        ft_strdel(&line);
     }
-    parse_enemy(map);
+    // paint_token(token);
+    get_real_token(token);
+    heat_map(map);
+    // parse_enemy(map);
     if (!map->me_x)
     {
         get_my_pos(map);

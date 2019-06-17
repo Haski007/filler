@@ -81,11 +81,11 @@ static void	    ft_free_int_arr(t_map *map)
 	int	x;
     int y;
 
-	y = -1;
-	while (map->heat[++y])
+	y = -1;   
+	while (++y < map->rows)
 	{
         x = -1;
-        while (map->heat[y][++x])
+        while (++x < map->cols)
             map->heat[y][x] = 0;
     }
 }
@@ -97,7 +97,9 @@ void            heat_map(t_map *map)
 
     i = -1;
     if (map->heat)
+    {
         ft_free_int_arr(map);
+    }
     else
     {
         map->heat = (int **)malloc(sizeof(int *) * map->rows + 1);

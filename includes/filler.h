@@ -28,6 +28,7 @@ typedef struct      s_map
     char            player;
     char            me;
     char            enemy;
+    int             contact;
     int             value;
     int             rows;
     int             cols;
