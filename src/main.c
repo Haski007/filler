@@ -39,6 +39,7 @@
 // #include "../libft/ft_putnbr.c"
 // #include "../libft/ft_strstr.c"
 // #include "../libft/ft_putstr.c"
+// #include "../libft/ft_strdel.c"
 // #include "enemy.c"
 
 void                paint_heat(t_map *map)
@@ -85,32 +86,37 @@ void                paint_map(t_map *map)
     }
 }
 
+static void         end_game(t_map *map, t_oken *token)
+{
+    int         i;
 
+    i = -1;
+    while (++i < map->rows)
+        ft_strdel(&map->map[i]);
+    map->map = NULL;
+    ft_putstr("0 0\n");
+    exit(0);
+}
 
 void                ready(t_map *map, t_oken *token)
 {
-    int i;
+    int         i;
 
     ft_putnbr(map->fin_y);
     ft_putchar(' ');
     ft_putnbr(map->fin_x);
     ft_putchar('\n');
-    // ft_free_arr(&map->map);
-    // ft_free_arr(&token->shape);
     map->me_x = map->fin_x;
     map->me_y = map->fin_y;
     i = -1;
-    while (++i < map->rows)
-    {
-        map->map[i] = NULL;
-        free(map->map[i]);
-    }
-    map->map = NULL;
-    free(map->map);
-    // i = -1;
     // while (++i < token->rows)
-    //     free(token->shape[i]);
+    //     ft_strdel(&token->shape[i]);
     // free(token->shape);
+    // dprintf(2, "rows = %d\n", token->rows);
+    // paint_token(token);
+    // token->shape = NULL;
+    // dprintf(2, "rows = %d", token->rows);
+    // token->shape = NULL;
     // system("leaks pdemian.filler");
     // exit(1);
 }
@@ -130,6 +136,8 @@ static void         size_of_map(char *line, t_map *map)
 
 static void         map_info(char *line, t_map *map)
 {
+    int i;
+
     if (ft_strnequ(line, "$$$ exec p1 : [./pdemian", 24))
         map->player = 1;
     while (get_next_line(map->fd, &line))
@@ -142,6 +150,12 @@ static void         map_info(char *line, t_map *map)
         }
         ft_strdel(&line);
     }
+    map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
+	map->map[map->rows] = NULL;
+    i = -1;
+    while (++i < map->rows)
+        map->map[i] = ft_strnew(map->cols);
+    map->map[i] = NULL;
     map->me = (map->player) ? 'O' : 'X';
     map->enemy = (map->player) ? 'X' : 'O';
 }
@@ -171,29 +185,16 @@ int                 main(void)
             while (1)
             {
                 get_map(&map, &token);
-                // paint_map(&map);
                 if (play(&map, &token))
-                {
                     ready(&map, &token);
-                }
                 else
                     if (check_all(&map, &token))
-                    {
                         ready(&map, &token);
-                    }
                     else
-                    {
-                        ft_putstr("0 0\n");
-                        exit(1);
-                    }
+                        end_game(&map, &token);
             }
         }
         ft_strdel(&line);
     }
-    // paint_map(&map);
-    // paint_heat(&map);
-    // paint_token(token);
-    // system("leaks pdemian.filler");
-    // exit(1);
     return (0);
 }

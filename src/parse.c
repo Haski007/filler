@@ -12,6 +12,19 @@
 
 #include "../includes/filler.h"
 
+void             malloc_map(t_map *map)
+{
+    int         i;
+
+    map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
+	map->map[map->rows] = NULL;
+    i = -1;
+    while (++i < map->cols)
+    {
+        map->map[i] = ft_strnew(map->cols);
+    }
+}
+
 static void             get_my_pos(t_map *map)
 {
     int     y;
@@ -77,45 +90,34 @@ void             size_of_token(char *line, t_oken *token)
     token->cols = ft_atoi(line);
 }
 
-static void             get_token(char *line, t_map *map, t_oken *token)
-{
-    int       i;
-    
-    i = -1;
-    token->shape[i] = ft_strdup(line);
-}
-
 void                get_map(t_map *map, t_oken *token)
 {
     int     i;
     char    *line;
     int     j;
 
-    if (!map->map)
-    {
-        map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
-	    map->map[map->rows] = NULL;
-    }
     if (!token->shape)
     {
         token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
-        token->shape[token->cols] = NULL;
+        token->shape[token->rows] = NULL;
     }
     i = -1;
     j = -1;
     while (get_next_line(map->fd, &line) > 0)
     {
+        // dprintf(2, "j = %d\n", j);        
         if (line[0] >= '0' && line[0] <= '9')
         {
-            map->map[++i] = ft_strdup(line + 4);
+            ft_strcpy(map->map[++i], line + 4);
         }
         else if (ft_strstr(line, "Piece"))
         {
             size_of_token(line, token);
-            ft_strdel(&line);
         }
         else if (line[0] == '.' || line[0] == '*')
         {
+            // dprintf(2, "rows = %d\n", token->rows);
+            // dprintf(2, "j = %d\n", j);
             token->shape[++j] = ft_strdup(line);
             if (j == token->rows - 1)
             {
