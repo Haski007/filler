@@ -44,7 +44,7 @@ int                    valid_token(t_map *map, t_oken *token, int x, int y)
 
 int                     play(t_map *map, t_oken *token)
 {
-    if ((map->player && map->rows < 90) || (!map->player && map->rows > 90))
+    if (map->player && map->rows < 90)
         return (tactic1(map, token));
     else
         return (tactic4(map, token));

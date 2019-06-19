@@ -40,7 +40,6 @@
 // #include "../libft/ft_strstr.c"
 // #include "../libft/ft_putstr.c"
 // #include "../libft/ft_strdel.c"
-// #include "enemy.c"
 
 void                paint_heat(t_map *map)
 {
@@ -81,42 +80,58 @@ void                paint_map(t_map *map)
 
     while(i < map->rows)
     {
-        printf("%s\n", map->map[i]);
+        dprintf(2, "%s\n", map->map[i]);
         i++;
     }
+    dprintf(2, "----------------------------\n");
 }
 
-static void         end_game(t_map *map, t_oken *token)
+static void         end_game(t_map *map)
 {
     int         i;
 
     i = -1;
     while (++i < map->rows)
-        ft_strdel(&map->map[i]);
+    {
+        map->map[i] = NULL;
+        free(map->map[i]);
+    }
     map->map = NULL;
+    free(map->map);
     ft_putstr("0 0\n");
-    exit(0);
+    exit(1);
 }
 
 void                ready(t_map *map, t_oken *token)
 {
-    int         i;
+    int i;
+    static int j;
 
     ft_putnbr(map->fin_y);
     ft_putchar(' ');
     ft_putnbr(map->fin_x);
     ft_putchar('\n');
+    // ft_free_arr(&map->map);
+    // ft_free_arr(&token->shape);
     map->me_x = map->fin_x;
     map->me_y = map->fin_y;
     i = -1;
+
+    // while (++i < map->rows)
+    // {
+    //     map->map[i] = NULL;
+    //     free(map->map[i]);
+    // }
+    // map->map = NULL;
+    // free(map->map);
+    // i = -1;
     // while (++i < token->rows)
-    //     ft_strdel(&token->shape[i]);
+    //     free(token->shape[i]);
+    // token->shape = NULL;
     // free(token->shape);
-    // dprintf(2, "rows = %d\n", token->rows);
-    // paint_token(token);
-    // token->shape = NULL;
-    // dprintf(2, "rows = %d", token->rows);
-    // token->shape = NULL;
+    // if (j == 3)
+    //     end_game(map);
+    // j++;
     // system("leaks pdemian.filler");
     // exit(1);
 }
@@ -150,12 +165,11 @@ static void         map_info(char *line, t_map *map)
         }
         ft_strdel(&line);
     }
-    map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
-	map->map[map->rows] = NULL;
     i = -1;
+    map->map = (char **)malloc(sizeof(char *) * map->rows + 1);
+    map->map[map->rows] = NULL;
     while (++i < map->rows)
         map->map[i] = ft_strnew(map->cols);
-    map->map[i] = NULL;
     map->me = (map->player) ? 'O' : 'X';
     map->enemy = (map->player) ? 'X' : 'O';
 }
@@ -170,15 +184,13 @@ int                 main(void)
     ft_bzero(&map, sizeof(t_map));
     ft_bzero(&token, sizeof(t_oken));
     map.fd = 0;
-    // map.fd = open("test.txt", O_RDONLY);
+    map.fd = open("test.txt", O_RDONLY);
     while (1)
     {
         if (!(get_next_line(map.fd, &line)))
             break ;
         if (ft_strstr(line, "$$$"))
-        {
             map_info(line, &map);
-        }
         else if (ft_strstr(line, "01234567890123"))
         {
             ft_strdel(&line);
@@ -186,15 +198,19 @@ int                 main(void)
             {
                 get_map(&map, &token);
                 if (play(&map, &token))
+                {
                     ready(&map, &token);
+                }
                 else
-                    if (check_all(&map, &token))
-                        ready(&map, &token);
-                    else
-                        end_game(&map, &token);
+                    end_game(&map);
             }
         }
         ft_strdel(&line);
     }
+    // paint_map(&map);
+    // paint_heat(&map);
+    // paint_token(token);
+    // system("leaks pdemian.filler");
+    // exit(1);
     return (0);
 }

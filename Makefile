@@ -24,7 +24,7 @@ LFLAGS :=	-lft -L $(LIBDIR)
 
 LIB :=		$(LIBDIR)libft.a	
 INC :=		filler 
-SRC :=		main parse play heat_map algos enemy
+SRC :=		main parse play heat_map algos
 
 INCS :=		$(addprefix $(INCDIR), $(addsuffix .h, $(INC)))
 SRCS :=		$(addprefix $(SRCDIR), $(addsuffix .c, $(SRC)))
