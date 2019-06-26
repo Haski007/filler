@@ -11,35 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/filler.h"
-// #include "heat_map.c"
-// #include "play.c"
-// #include "parse.c"
-// #include "algos.c"
-// #include "../libft/get_next_line.c"
-// #include "../libft/ft_strlen.c"
-// #include "../libft/ft_bzero.c"
-// #include "../libft/ft_numlen.c"
-// #include "../libft/ft_strnew.c"
-// #include "../libft/ft_lstadd.c"
-// #include "../libft/ft_lstnew.c"
-// #include "../libft/ft_memalloc.c"
-// #include "../libft/ft_strchr.c"
-// #include "../libft/ft_strdup.c"
-// #include "../libft/ft_strjoin.c"
-// #include "../libft/ft_memcpy.c"
-// #include "../libft/ft_memset.c"
-// #include "../libft/ft_strcat.c"
-// #include "../libft/ft_strcpy.c"
-// #include "../libft/ft_free_arr.c"
-// #include "../libft/ft_strnequ.c"
-// #include "../libft/ft_strncmp.c"
-// #include "../libft/ft_atoi.c"
-// #include "../libft/ft_tolower.c"
-// #include "../libft/ft_putchar.c"
-// #include "../libft/ft_putnbr.c"
-// #include "../libft/ft_strstr.c"
-// #include "../libft/ft_putstr.c"
-// #include "../libft/ft_strdel.c"
 
 void                paint_heat(t_map *map)
 {
@@ -96,13 +67,13 @@ static void         end_game(t_map *map)
         map->map[i] = NULL;
         free(map->map[i]);
     }
-    map->map = NULL;
     free(map->map);
+    map->map = NULL;
     ft_putstr("0 0\n");
     exit(1);
 }
 
-void                ready(t_map *map, t_oken *token)
+static void          ready(t_map *map, t_oken *token)
 {
     int i;
 
@@ -117,7 +88,7 @@ void                ready(t_map *map, t_oken *token)
     token->shape = NULL;
 }
 
-static void         size_of_map(char *line, t_map *map)
+static void             size_of_map(char *line, t_map *map)
 {
     int     i;
     char    *tmp;
@@ -152,8 +123,12 @@ static void         map_info(t_map *map)
     i = -1;
     while (++i < map->rows)
         map->map[i] = (char*)malloc(sizeof(char) * map->cols + 1);
+    map->heat = (int**)malloc(sizeof(int*) * map->rows);
+    i = -1;
+    while (++i < map->rows)
+        map->heat[i] = malloc(sizeof(int) * map->cols);
     map->me = (map->player) ? "Oo" : "Xx";
-    map->enemy = (map->player) ? "Xx" : "Oo";
+    map->en = (map->player) ? "Xx" : "Oo";
 }
 
 int                 main(void)
@@ -170,16 +145,12 @@ int                 main(void)
     while (1)
     {
         get_parse(&map, &token);
-        // heat_map(&map);
+        heat_map(&map);
+        // paint_heat(&map);
         if (play(&map, &token))
             ready(&map, &token);
         else
-        {
-            // printf("It's loose\n");
-            return (0);
-        }
-        // if (++i == 2)
-        //     break ;
+            end_game(&map);
     }
     // system("leaks pdemian.filler");
     return (0);

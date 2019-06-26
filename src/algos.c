@@ -28,8 +28,8 @@ static int                    valid_token(t_map *map, t_oken *token, int x, int 
         while (++i < token->right + 1)
         {
             if (token->shape[j][i] == '*' &&
-            (map->map[y + j - token->up][x + i - token->left] == map->enemy[0]
-            || map->map[y + j - token->up][x + i - token->left] == map->enemy[1]))
+            (map->map[y + j - token->up][x + i - token->left] == map->en[0]
+            || map->map[y + j - token->up][x + i - token->left] == map->en[1]))
                 return (0);
             else if (token->shape[j][i] == '*' &&
             (map->map[y + j - token->up][x + i - token->left] == map->me[0] ||
@@ -42,46 +42,64 @@ static int                    valid_token(t_map *map, t_oken *token, int x, int 
     return (0);
 }
 
-int                tactic1(t_map *map, t_oken *token)
+static int                tactic1(t_map *map, t_oken *token)
 {
     int     x;
     int     y;
+    int     value;
 
+    value = 999;
     y = -1;
     while (++y < map->rows)
     {
         x = -1;
         while (++x < map->cols)
         {
-            if (valid_token(map, token, x, y))
+            if (valid_token(map, token, x, y) && map->heat[y][x] <= value)
             {
                 map->fin_x = x - token->left;
                 map->fin_y = y - token->up;
-                return (1);
+                value = map->heat[y][x];
             }
         }
     }
-    return(0);
+    if (value == 999)
+        return (0);
+    return(1);
 }
 
-int                tactic4(t_map *map, t_oken *token)
+static int                tactic4(t_map *map, t_oken *token)
 {
     int     x;
     int     y;
-    
+    int     value;
+
+    value = 999;
     y = map->rows - 1;
     while (--y > 0)
     {
         x = map->cols - 1;
         while (--x > 0)
         {
-            if (valid_token(map, token, x, y))
+            if (valid_token(map, token, x, y) && map->heat[y][x] <= value)
             {
                 map->fin_x = x - token->left;
                 map->fin_y = y - token->up;
-                return (1);
+                value = map->heat[y][x];
             }
         }
     }
-    return(0);
+    if (value == 999)
+        return (0);
+    return(1);
+}
+
+int                     play(t_map *map, t_oken *token)
+{
+    get_real_token(token);
+    if (map->player && map->rows < 90)
+        return (tactic1(map, token));
+    else
+        return (tactic4(map, token));
+    return (0);
 }

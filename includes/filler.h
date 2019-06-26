@@ -27,7 +27,7 @@ typedef struct      s_map
     int             **heat;
     char            player;
     char            *me;
-    char            *enemy;
+    char            *en;
     int             value;
     int             rows;
     int             cols;
@@ -56,13 +56,7 @@ void                parse_enemy(t_map *map);
 void                heat_map(t_map *map);
 void                get_real_token(t_oken *token);
 int                 play(t_map *map, t_oken *token);
-void                size_of_token(char *line, t_oken *token);
-int                tactic1(t_map *map, t_oken *token);
-int                tactic4(t_map *map, t_oken *token);
-int                 tactic3(t_map *map, t_oken *token);
-int                 tactic2(t_map *map, t_oken *token);
-void                ready(t_map *map, t_oken *token);
-int                check_all(t_map *map, t_oken *token);
+int                 check_all(t_map *map, t_oken *token);
 void                parse_enemy(t_map *map);
 
 

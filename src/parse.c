@@ -12,31 +12,6 @@
 
 #include "../includes/filler.h"
 
-// static void             get_my_pos(t_map *map)
-// {
-//     int     y;
-//     int     x;
-
-//     y = -1;
-//     while (++y < map->rows)
-//     {
-//         x = -1;
-//         while (++x < map->cols)
-//         {
-//             if (map->map[y][x] == map->enemy || map->map[y][x] == ft_tolower(map->enemy))
-//             {
-//                 map->enemy_y = x;
-//                 map->enemy_y = y;
-//             }
-//             else if (map->map[y][x] == map->me || map->map[y][x] == ft_tolower(map->me))
-//             {
-//                 map->me_x = x;
-//                 map->me_y = y;
-//             }
-//         }
-//     }
-// }
-
 void             get_real_token(t_oken *token)
 {
     int     y;
@@ -68,7 +43,7 @@ void             get_real_token(t_oken *token)
 }
 
 
-void             size_of_token(char *line, t_oken *token)
+static void             size_of_token(char *line, t_oken *token)
 {
     int     i;
     char    *tmp;
@@ -111,13 +86,6 @@ void                get_parse(t_map *map, t_oken *token)
                 break ;
             }
         }
-        // else if (line[0] == '<')
-        // {
-        //     ft_strdel(&line);
-        //     return ;
-        // }
-        // dprintf(2 , "HUI\n");
-
         ft_strdel(&line);
     }
 }
