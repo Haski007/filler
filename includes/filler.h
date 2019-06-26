@@ -26,9 +26,8 @@ typedef struct      s_map
     char            **map;
     int             **heat;
     char            player;
-    char            me;
-    char            enemy;
-    int             contact;
+    char            *me;
+    char            *enemy;
     int             value;
     int             rows;
     int             cols;
@@ -52,12 +51,11 @@ typedef struct      s_oken
     int             right;
 }                   t_oken;
 
-void                get_map(t_map *map, t_oken *token);
+void                get_parse(t_map *map, t_oken *token);
 void                parse_enemy(t_map *map);
 void                heat_map(t_map *map);
+void                get_real_token(t_oken *token);
 int                 play(t_map *map, t_oken *token);
-void                play2(t_map *map, t_oken *token);
-int                 valid_token(t_map *map, t_oken *token, int x, int y);
 void                size_of_token(char *line, t_oken *token);
 int                tactic1(t_map *map, t_oken *token);
 int                tactic4(t_map *map, t_oken *token);

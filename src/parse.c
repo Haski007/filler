@@ -12,32 +12,32 @@
 
 #include "../includes/filler.h"
 
-static void             get_my_pos(t_map *map)
-{
-    int     y;
-    int     x;
+// static void             get_my_pos(t_map *map)
+// {
+//     int     y;
+//     int     x;
 
-    y = -1;
-    while (++y < map->rows)
-    {
-        x = -1;
-        while (++x < map->cols)
-        {
-            if (map->map[y][x] == map->enemy || map->map[y][x] == ft_tolower(map->enemy))
-            {
-                map->enemy_y = x;
-                map->enemy_y = y;
-            }
-            else if (map->map[y][x] == map->me || map->map[y][x] == ft_tolower(map->me))
-            {
-                map->me_x = x;
-                map->me_y = y;
-            }
-        }
-    }
-}
+//     y = -1;
+//     while (++y < map->rows)
+//     {
+//         x = -1;
+//         while (++x < map->cols)
+//         {
+//             if (map->map[y][x] == map->enemy || map->map[y][x] == ft_tolower(map->enemy))
+//             {
+//                 map->enemy_y = x;
+//                 map->enemy_y = y;
+//             }
+//             else if (map->map[y][x] == map->me || map->map[y][x] == ft_tolower(map->me))
+//             {
+//                 map->me_x = x;
+//                 map->me_y = y;
+//             }
+//         }
+//     }
+// }
 
-static void             get_real_token(t_oken *token)
+void             get_real_token(t_oken *token)
 {
     int     y;
     int     x;
@@ -70,56 +70,54 @@ static void             get_real_token(t_oken *token)
 
 void             size_of_token(char *line, t_oken *token)
 {
-    line += 6;
-    token->rows = ft_atoi(line);
-    while (*line >= '0' && *line <= '9')
-        line++;
-    token->cols = ft_atoi(line);
+    int     i;
+    char    *tmp;
+
+    i = 0;
+    tmp = line + 6;
+    token->rows = ft_atoi(tmp);
+    while (tmp[i] >= '0' && tmp[i] <= '9')
+        i++;
+    token->cols = ft_atoi(tmp + i);
+    token->shape = (char**)malloc(sizeof(char*) * token->rows + 1);
+    token->shape[token->rows] = NULL;
+    i = -1;
+    while (++i < token->rows)
+        token->shape[i] = (char*)malloc(sizeof(char) * token->cols + 1);
 }
 
-void                get_map(t_map *map, t_oken *token)
+void                get_parse(t_map *map, t_oken *token)
 {
-    int     i;
     char    *line;
+    int     i;
     int     j;
 
-        token->shape = (char **)malloc(sizeof(char*) * token->rows + 1);
-        token->shape[token->cols] = NULL;
     i = -1;
     j = -1;
-    while (1)
+    while (get_next_line(map->fd, &line) > 0)
     {
-            // dprintf(2, "\nHUI\n");
-        if (get_next_line(map->fd, &line) < 1)
-            break ;
-            // dprintf(2, "\npizda\n");
-        if (line[0] >= '0' && line[0] <= '9')
-            ft_strcpy(map->map[++i], line + 4);
-        else if (ft_strstr(line, "Piece"))
+        if (line[0] == '0')
         {
-            size_of_token(line, token);
-            ft_strdel(&line);
+            ft_strcpy(map->map[++i], line + 4);
         }
+        else if (ft_strstr(line, "Piece"))
+            size_of_token(line, token);
         else if (line[0] == '.' || line[0] == '*')
         {
-            token->shape[++j] = ft_strdup(line);
+            ft_strcpy(token->shape[++j], line);
             if (j == token->rows - 1)
             {
                 ft_strdel(&line);
                 break ;
             }
         }
-        ft_strdel(&line);
-    }
-    // dprintf(2, "\npizda\n");
+        // else if (line[0] == '<')
+        // {
+        //     ft_strdel(&line);
+        //     return ;
+        // }
+        // dprintf(2 , "HUI\n");
 
-    // paint_map(map);
-    // paint_token(token);
-    get_real_token(token);
-    heat_map(map);
-    // parse_enemy(map);
-    if (!map->me_x)
-    {
-        get_my_pos(map);
+        ft_strdel(&line);
     }
 }
