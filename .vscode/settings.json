@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "ft_printf.h": "c",
-        "filler.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "Disabled"
-}

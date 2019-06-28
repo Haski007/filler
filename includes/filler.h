@@ -28,13 +28,8 @@ typedef struct	s_map
 	char		player;
 	char		*me;
 	char		*en;
-	int			value;
 	int			rows;
 	int			cols;
-	int			me_x;
-	int			me_y;
-	int			enemy_x;
-	int			enemy_y;
 	int			fin_y;
 	int			fin_x;
 }				t_map;
